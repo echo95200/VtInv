@@ -9,6 +9,16 @@
 #include "LimeReport"
 #include <QSqlDatabase>
 
+#include <QVBoxLayout>
+#include <QDesktopWidget>
+#include <QApplication>
+#include <QToolBar>
+#include <QAction>
+#include <QIcon>
+#include <QSize>
+#include <QToolButton>
+#include <QDebug>
+
 VtInv::VtInv(QWidget *parent)
     :QWidget(parent)
 {
@@ -315,11 +325,54 @@ void preview(QString dbDriver, QString dbFilePath, QString dbUserName, QString d
         report->dataManager()->addModel("PAYMENT"+QString::number(i),modelPayment,true);
     }
 
-    QString fileName = QFileDialog::getOpenFileName(NULL,"Select report file","/home/echo/","*.lrxml");
-    if (!fileName.isEmpty()) {
-        report->loadFromFile(fileName);
-        report->previewReport();
+
+//    QString fileName = QFileDialog::getOpenFileName(NULL,"Select report file","/home/echo/","*.lrxml");
+//    if (!fileName.isEmpty()) {
+//        report->loadFromFile(fileName);
+//        report->previewReport();
+//    }
+
+    QWidget *widget = new QWidget();
+    QToolBar *pToolBar = new QToolBar();
+    QToolButton* pToolButton = new QToolButton();
+
+    QAction *pAction = new QAction();
+    pAction->setIcon(QIcon(":/png/images/Print.png"));
+    pAction->setToolTip("Print");
+    pToolButton->setDefaultAction(pAction);
+    //QObject::connect(pAction,SIGNAL(triggered(bool)),m_previwe,SLOT());
+
+    pToolBar->addWidget(pToolButton);
+    pToolBar->setIconSize(QSize(96,48));
+
+    LimeReport::PreviewReportWidget* m_previwe = report->createPreviewWidget();
+
+    QVBoxLayout *pVLayout = new QVBoxLayout();
+    pVLayout->addWidget(pToolBar);
+    pVLayout->addWidget(m_previwe);
+
+    widget->setLayout(pVLayout);
+
+    //Change the position of the application
+    QDesktopWidget* desktop = QApplication::desktop();
+
+    int screenWidth = desktop->screenGeometry().width();
+    int screenHeight = desktop->screenGeometry().height();
+
+    int x = screenWidth*0.1;
+    int y = screenHeight*0.1;
+
+    widget->resize(screenWidth*0.8,screenHeight*0.8);
+    widget->move(x,y);
+    if (QFile::exists(QApplication::applicationDirPath()+"/InvoiceDemos/KAWACHR.lrxml")){
+        report->loadFromFile(QApplication::applicationDirPath()+"/InvoiceDemos/KAWACHR.lrxml");
+        m_previwe->refreshPages();
+        widget->show();
+        //widget->showNormal();
+        qDebug() << "....";
     }
+
+
 }
 
 void design(QString dbDriver, QString dbFilePath, QString dbUserName, QString dbPassword, QString dbHostName, int Port,QString invoiceNumber)
@@ -475,4 +528,7 @@ void design(QString dbDriver, QString dbFilePath, QString dbUserName, QString db
     report->designReport();
 }
 
+void slotPrint()
+{
 
+}

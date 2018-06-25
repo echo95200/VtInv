@@ -35,4 +35,6 @@ VTINVSHARED_EXPORT void design(QString dbDriver,
                                int Port,
                                QString invoiceNumber);
 
+VTINVSHARED_EXPORT void slotPrint();
+
 #endif // VTINV_GLOBAL_H

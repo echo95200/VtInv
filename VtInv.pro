@@ -39,3 +39,6 @@ unix {
 }
 
 include($$PWD/LimeReport-1.4.7/limereport.pri)
+
+RESOURCES += \
+    img.qrc
