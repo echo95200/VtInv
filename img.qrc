@@ -1,5 +1,9 @@
 <RCC>
     <qresource prefix="/png">
-        <file>images/Print.png</file>
+        <file>Images/Print.png</file>
+        <file>Images/PDF.png</file>
+        <file>Images/Prev.png</file>
+        <file>Images/Next.png</file>
+        <file>Images/End.png</file>
     </qresource>
 </RCC>

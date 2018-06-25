@@ -11,9 +11,18 @@ class VTINVSHARED_EXPORT VtInv : public QWidget
 public:
     explicit VtInv(QWidget *parent = 0);
 
-private slots:
-//    void previewClicked();
+//private slots:
+//    void slotPrintClicked();
 //    void designClicked();
+
+//private:
+//    LimeReport::ReportEngine m_report;
+//    LimeReport::PreviewReportWidget* m_preview;
 };
+
+//extern "C"{
+//    VTINVSHARED_EXPORT VtInv* getVtInv();
+//}
+
 
 #endif // VTINV_H

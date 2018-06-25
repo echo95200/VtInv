@@ -6,8 +6,8 @@
 #include <QSqlQueryModel>
 #include <QStandardItemModel>
 #include <QSqlQuery>
-#include "LimeReport"
 #include <QSqlDatabase>
+#include <LimeReport>
 
 #include <QVBoxLayout>
 #include <QDesktopWidget>
@@ -24,6 +24,7 @@ VtInv::VtInv(QWidget *parent)
 {
     this->showNormal();
 }
+
 
 /*
 void setDatabase(LimeReport::ReportEngine *report, QSqlDatabase m_db, QString dbDriver, QString dbFilePath, QString dbUserName, QString dbPassword, QString dbHostName, int Port, QString invoiceNumber)
@@ -332,24 +333,55 @@ void preview(QString dbDriver, QString dbFilePath, QString dbUserName, QString d
 //        report->previewReport();
 //    }
 
+    LimeReport::PreviewReportWidget* m_preview = report->createPreviewWidget();
     QWidget *widget = new QWidget();
     QToolBar *pToolBar = new QToolBar();
     QToolButton* pToolButton = new QToolButton();
 
     QAction *pAction = new QAction();
-    pAction->setIcon(QIcon(":/png/images/Print.png"));
+    pAction->setIcon(QIcon(":/png/Images/Print.png"));
     pAction->setToolTip("Print");
     pToolButton->setDefaultAction(pAction);
-    //QObject::connect(pAction,SIGNAL(triggered(bool)),m_previwe,SLOT());
+    QObject::connect(pAction,SIGNAL(triggered()),m_preview,SLOT(print()));
+
+    QToolButton* pToolButtonPDF = new QToolButton();
+    QAction *pActionPDF = new QAction();
+    pActionPDF->setIcon(QIcon(":/png/Images/PDF.png"));
+    pActionPDF->setToolTip("PDF");
+    pToolButtonPDF->setDefaultAction(pActionPDF);
+    QObject::connect(pActionPDF,SIGNAL(triggered()),m_preview,SLOT(printToPDF()));
+
+    QToolButton* pToolButtonPre = new QToolButton();
+    QAction *pActionPre = new QAction();
+    pActionPre->setIcon(QIcon(":/png/Images/Prev.png"));
+    pActionPre->setToolTip("Prev");
+    pToolButtonPre->setDefaultAction(pActionPre);
+    QObject::connect(pActionPre,SIGNAL(triggered()),m_preview,SLOT(priorPage()));
+
+    QToolButton* pToolButtonNext = new QToolButton();
+    QAction *pActionNext = new QAction();
+    pActionNext->setIcon(QIcon(":/png/Images/Next.png"));
+    pActionNext->setToolTip("Next");
+    pToolButtonNext->setDefaultAction(pActionNext);
+    QObject::connect(pActionNext,SIGNAL(triggered()),m_preview,SLOT(nextPage()));
+
+    QToolButton* pToolButtonEnd = new QToolButton();
+    QAction *pActionEnd = new QAction();
+    pActionEnd->setIcon(QIcon(":/png/Images/End.png"));
+    pActionEnd->setToolTip("End");
+    pToolButtonEnd->setDefaultAction(pActionEnd);
+    QObject::connect(pActionEnd,SIGNAL(triggered()),widget,SLOT(close()));
 
     pToolBar->addWidget(pToolButton);
+    pToolBar->addWidget(pToolButtonPDF);
+    pToolBar->addWidget(pToolButtonPre);
+    pToolBar->addWidget(pToolButtonNext);
+    pToolBar->addWidget(pToolButtonEnd);
     pToolBar->setIconSize(QSize(96,48));
-
-    LimeReport::PreviewReportWidget* m_previwe = report->createPreviewWidget();
 
     QVBoxLayout *pVLayout = new QVBoxLayout();
     pVLayout->addWidget(pToolBar);
-    pVLayout->addWidget(m_previwe);
+    pVLayout->addWidget(m_preview);
 
     widget->setLayout(pVLayout);
 
@@ -366,10 +398,10 @@ void preview(QString dbDriver, QString dbFilePath, QString dbUserName, QString d
     widget->move(x,y);
     if (QFile::exists(QApplication::applicationDirPath()+"/InvoiceDemos/KAWACHR.lrxml")){
         report->loadFromFile(QApplication::applicationDirPath()+"/InvoiceDemos/KAWACHR.lrxml");
-        m_previwe->refreshPages();
+        m_preview->refreshPages();
         widget->show();
-        //widget->showNormal();
-        qDebug() << "....";
+    }else {
+        QMessageBox::information(NULL,"Tips","The file xml doesn't exist!");
     }
 
 
@@ -526,9 +558,4 @@ void design(QString dbDriver, QString dbFilePath, QString dbUserName, QString db
     }
 
     report->designReport();
-}
-
-void slotPrint()
-{
-
 }
