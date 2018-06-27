@@ -38,7 +38,8 @@ unix {
     INSTALLS += target
 }
 
-include($$PWD/LimeReport-1.4.7/limereport.pri)
+#include($$PWD/LimeReport-1.4.7/limereport.pri)
+include($$PWD/LimeReport-master/limereport.pri)
 
 RESOURCES += \
     img.qrc
