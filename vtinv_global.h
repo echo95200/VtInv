@@ -9,16 +9,6 @@
 #  define VTINVSHARED_EXPORT Q_DECL_IMPORT
 #endif
 
-//VTINVSHARED_EXPORT void setDatabase(LimeReport::ReportEngine *report,
-//                                    QSqlDatabase m_db,
-//                                    QString dbDriver,
-//                                    QString dbFilePath,
-//                                    QString dbUserName,
-//                                    QString dbPassword,
-//                                    QString dbHostName,
-//                                    int Port,
-//                                    QString invoiceNumber);
-
 VTINVSHARED_EXPORT void preview(QString dbDriver,
                                 QString dbFilePath,
                                 QString dbUserName,

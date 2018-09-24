@@ -39,7 +39,15 @@ unix {
 }
 
 #include($$PWD/LimeReport-1.4.7/limereport.pri)
-include($$PWD/LimeReport-master/limereport.pri)
+#include($$PWD/LimeReport-master/limereport.pri)
 
 RESOURCES += \
     img.qrc
+
+
+win32:CONFIG(release, debug|release): LIBS += -L$$PWD/../LibLimeReportMaster/release/ -llimereportd
+else:win32:CONFIG(debug, debug|release): LIBS += -L$$PWD/../LibLimeReportMaster/debug/ -llimereportd
+else:unix: LIBS += -L$$PWD/../LibLimeReportMaster/ -llimereportd
+
+INCLUDEPATH += $$PWD/../LibLimeReportMaster/include
+DEPENDPATH += $$PWD/../LibLimeReportMaster/include

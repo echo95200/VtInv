@@ -3,6 +3,25 @@
 
 #include "vtinv_global.h"
 #include <QWidget>
+#include <QFileDialog>
+#include <QFile>
+#include <QMessageBox>
+#include <QSqlQueryModel>
+#include <QStandardItemModel>
+#include <QSqlQuery>
+#include <QSqlDatabase>
+#include <QSqlError>
+#include <LimeReport>
+
+#include <QVBoxLayout>
+#include <QDesktopWidget>
+#include <QApplication>
+#include <QToolBar>
+#include <QAction>
+#include <QIcon>
+#include <QSize>
+#include <QToolButton>
+#include <QDebug>
 
 class VTINVSHARED_EXPORT VtInv : public QWidget
 {
@@ -11,18 +30,13 @@ class VTINVSHARED_EXPORT VtInv : public QWidget
 public:
     explicit VtInv(QWidget *parent = 0);
 
-//private slots:
-//    void slotPrintClicked();
-//    void designClicked();
+    LimeReport::ReportEngine* initDatabase(QString dbDriver, QString dbFilePath, QString dbUserName, QString dbPassword, QString dbHostName, int Port,QString invoiceNumber);
 
-//private:
-//    LimeReport::ReportEngine m_report;
-//    LimeReport::PreviewReportWidget* m_preview;
+private:
+    QSqlDatabase m_db;
+    LimeReport::ReportEngine* m_pReportEngine;
 };
 
-//extern "C"{
-//    VTINVSHARED_EXPORT VtInv* getVtInv();
-//}
 
 
 #endif // VTINV_H
